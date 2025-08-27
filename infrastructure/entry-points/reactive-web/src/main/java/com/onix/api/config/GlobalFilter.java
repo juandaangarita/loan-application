@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.onix.api.dto.ApiResponse;
+import com.onix.usecase.exception.InvalidAmountLoanException;
+import com.onix.usecase.exception.InvalidLoanTypeException;
+import com.onix.usecase.exception.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -36,16 +39,21 @@ public class GlobalFilter implements WebFilter {
         ApiResponse<Object> body;
 
         switch (ex) {
-//            case EmailAlreadyRegisteredException emailAlreadyRegisteredException -> {
-//                log.debug("Email already registered exception: {}", emailAlreadyRegisteredException.getMessage());
-//                status = HttpStatus.CONFLICT;
-//                body = ApiResponse.error(status.value(), VALIDATION_ERROR, ex.getMessage());
-//            }
-//            case ValidationException validationException -> {
-//                log.debug("Validation exception: {}", validationException.getMessage());
-//                status = HttpStatus.BAD_REQUEST;
-//                body = ApiResponse.error(status.value(), VALIDATION_ERROR, ex.getMessage());
-//            }
+            case InvalidAmountLoanException invalidAmountLoanException -> {
+                log.debug("Invalid amount for type of loan exception: {}", invalidAmountLoanException.getMessage());
+                status = HttpStatus.BAD_REQUEST;
+                body = ApiResponse.error(status.value(), VALIDATION_ERROR, ex.getMessage());
+            }
+            case InvalidLoanTypeException invalidLoanTypeException -> {
+                log.debug("Invalid type of loan exception: {}", invalidLoanTypeException.getMessage());
+                status = HttpStatus.BAD_REQUEST;
+                body = ApiResponse.error(status.value(), VALIDATION_ERROR, ex.getMessage());
+            }
+            case ValidationException validationException -> {
+                log.debug("Validation exception: {}", validationException.getMessage());
+                status = HttpStatus.BAD_REQUEST;
+                body = ApiResponse.error(status.value(), VALIDATION_ERROR, ex.getMessage());
+            }
             case IllegalArgumentException illegalArgumentException -> {
                 log.debug("Illegal argument exception: {}", illegalArgumentException.getMessage());
                 status = HttpStatus.BAD_REQUEST;

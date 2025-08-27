@@ -9,6 +9,6 @@ public record LoanDTO (
         Integer termMonths,
         String email,
         String documentNumber,
-        String loanStatus,
-        String loanType) {
+        Integer loanStatusId,
+        Integer loanTypeId) {
 }

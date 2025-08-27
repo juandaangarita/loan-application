@@ -1,25 +1,28 @@
-package com.onix.model.loanapplication;
+package com.onix.r2dbc.entity;
+
 import java.math.BigDecimal;
 import java.util.UUID;
-import lombok.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
-@ToString
-public class Loan {
+@Builder
+@Table("loan_application")
+public class LoanEntity {
+    @Id
     private UUID loanId;
     private BigDecimal amount;
     private Integer termMonths;
-    private String email;
     private String documentNumber;
+    private String email;
     private Integer loanTypeId;
-    private Integer loanStatusId;
+    private Integer statusId;
 }

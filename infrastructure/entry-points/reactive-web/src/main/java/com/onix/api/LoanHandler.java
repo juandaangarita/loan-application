@@ -27,7 +27,7 @@ public class LoanHandler {
     private final LoggingLoanValidator loggingLoanValidator;
 
     public Mono<ServerResponse> listenSaveLoan(ServerRequest request) {
-        log.trace("Received request to create a new user");
+        log.trace("Submitted new loan application request");
         return request.bodyToMono(CreateLoanDTO.class)
                 .doOnNext(dto -> log.trace("Request body: {}", dto))
                 .map(loanMapper::toModel)

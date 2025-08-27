@@ -1,6 +1,6 @@
 package com.onix.r2dbc.helper;
 
-import com.onix.r2dbc.dto.LoanEntity;
+import com.onix.r2dbc.entity.LoanEntity;
 import java.util.UUID;
 import org.reactivestreams.Publisher;
 import org.springframework.data.r2dbc.mapping.event.BeforeConvertCallback;

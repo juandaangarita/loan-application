@@ -1,7 +1,6 @@
-package com.onix.r2dbc.dto;
+package com.onix.r2dbc.entity;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,14 +14,14 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @Builder
-@Table("loan_application")
-public class LoanEntity {
+@Table("loan_type")
+public class LoanTypeEntity {
     @Id
-    private UUID loanId;
-    private BigDecimal amount;
-    private Integer termMonths;
-    private String documentNumber;
-    private String email;
     private Integer loanTypeId;
-    private Integer statusId;
+    private String name;
+    private String description;
+    private BigDecimal minAmount;
+    private BigDecimal maxAmount;
+    private BigDecimal interestRate;
+    private Boolean autoValidation;
 }

@@ -1,6 +1,6 @@
-package com.onix.r2dbc;
+package com.onix.r2dbc.repository.loan;
 
-import com.onix.r2dbc.dto.LoanEntity;
+import com.onix.r2dbc.entity.LoanEntity;
 import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 

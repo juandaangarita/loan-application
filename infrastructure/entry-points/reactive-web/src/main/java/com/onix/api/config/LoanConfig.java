@@ -10,8 +10,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class LoanConfig {
     private String base;
     private String loan;
+    private String type;
+    private String status;
 
     public String getLoan() {
         return base + loan;
+    }
+
+    public String getType() {
+        return base + type;
+    }
+
+    public String getStatus() {
+        return base + status;
     }
 }

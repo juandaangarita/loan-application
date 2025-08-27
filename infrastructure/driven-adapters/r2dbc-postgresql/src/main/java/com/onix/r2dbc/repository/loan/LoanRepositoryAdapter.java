@@ -1,8 +1,8 @@
-package com.onix.r2dbc;
+package com.onix.r2dbc.repository.loan;
 
 import com.onix.model.loanapplication.Loan;
 import com.onix.model.loanapplication.gateways.LoanRepository;
-import com.onix.r2dbc.dto.LoanEntity;
+import com.onix.r2dbc.entity.LoanEntity;
 import com.onix.r2dbc.helper.ReactiveAdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;

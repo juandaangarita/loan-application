@@ -1,5 +1,7 @@
 package com.onix.r2dbc;
 
+import com.onix.r2dbc.repository.loan.LoanReactiveRepository;
+import com.onix.r2dbc.repository.loan.LoanRepositoryAdapter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
