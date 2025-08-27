@@ -81,7 +81,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: term
+                  name: term_months
                   type: INT
                   constraints:
                     nullable: false

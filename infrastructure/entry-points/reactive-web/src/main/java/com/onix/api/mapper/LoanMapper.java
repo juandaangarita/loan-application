@@ -8,7 +8,8 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface LoanMapper {
-
+    @Mapping(target = "loanStatus", ignore = true)
+    @Mapping(target = "loanType", ignore = true)
     LoanDTO toDto(Loan loan);
 
     @Mapping(target = "loanId", ignore = true)

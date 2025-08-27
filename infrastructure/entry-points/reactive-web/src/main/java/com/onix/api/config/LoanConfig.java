@@ -9,9 +9,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "loan.paths")
 public class LoanConfig {
     private String base;
-    private String loans;
+    private String loan;
 
-    public String getUsers() {
-        return base + loans;
+    public String getLoan() {
+        return base + loan;
     }
 }

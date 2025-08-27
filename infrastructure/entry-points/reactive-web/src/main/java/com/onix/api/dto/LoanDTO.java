@@ -6,7 +6,7 @@ import java.util.UUID;
 public record LoanDTO (
         UUID loanId,
         BigDecimal amount,
-        Integer termInMonths,
+        Integer termMonths,
         String email,
         String documentNumber,
         String loanStatus,

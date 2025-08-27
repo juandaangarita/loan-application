@@ -3,7 +3,6 @@ package com.onix.api;
 import com.onix.api.config.LoanConfig;
 import com.onix.api.dto.ApiResponse;
 import com.onix.api.dto.CreateLoanDTO;
-import com.onix.api.dto.LoanDTO;
 import com.onix.api.mapper.LoanMapper;
 import com.onix.api.validator.LoggingLoanValidator;
 import com.onix.usecase.loanapplication.LoanUseCase;
@@ -27,7 +26,7 @@ public class LoanHandler {
     private final LoanMapper loanMapper;
     private final LoggingLoanValidator loggingLoanValidator;
 
-    public Mono<ServerResponse> listenSaveUser(ServerRequest request) {
+    public Mono<ServerResponse> listenSaveLoan(ServerRequest request) {
         log.trace("Received request to create a new user");
         return request.bodyToMono(CreateLoanDTO.class)
                 .doOnNext(dto -> log.trace("Request body: {}", dto))
@@ -37,7 +36,7 @@ public class LoanHandler {
                 .map(loanMapper::toDto)
                 .doOnNext(loanDTO -> log.debug("Loan submitted successfully with ID: {}", loanDTO.loanId()))
                 .flatMap(loanDTO -> ServerResponse
-                        .created(URI.create(loanConfig.getUsers() + loanDTO.loanId()))
+                        .created(URI.create(loanConfig.getLoan() + loanDTO.loanId()))
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(ApiResponse.success(
                                 HttpStatus.CREATED.value(),

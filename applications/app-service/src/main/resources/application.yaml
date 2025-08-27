@@ -12,7 +12,7 @@ spring:
   profiles:
     include: null
   liquibase:
-    url: jdbc:postgresql://localhost:5432/loan_application
+    url: jdbc:postgresql://localhost:5432/loan
     user: admin
     password: Admin1234!
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -32,14 +32,14 @@ cors:
 loan:
   paths:
     base: "/api/v1"
-    loans: "/loans"
+    loan: "/loan"
 
 adapters:
   r2dbc:
     postgres:
       host: "localhost"
       port: 5432
-      database: "authentication"
+      database: "loan"
       username: "admin"
       password: "Admin1234!"
       schema: "public"

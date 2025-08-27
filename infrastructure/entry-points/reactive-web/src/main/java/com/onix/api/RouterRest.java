@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -51,6 +50,6 @@ public class RouterRest {
             )
     )
     public RouterFunction<ServerResponse> routerFunction(LoanHandler loanHandler) {
-        return route(POST(loanConfig.getLoans()), loanHandler::listenSaveLoan);
+        return route(POST(loanConfig.getLoan()), loanHandler::listenSaveLoan);
     }
 }

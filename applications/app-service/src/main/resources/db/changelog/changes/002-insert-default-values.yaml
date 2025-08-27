@@ -1,0 +1,131 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: Juan Angarita
+      changes:
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 0
+              - column:
+                  name: name
+                  value: Created
+              - column:
+                  name: description
+                  value: Loan application created
+
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: Review Pending
+              - column:
+                  name: description
+                  value: Loan application review in process
+
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: Reviewed
+              - column:
+                  name: description
+                  value: Loan application reviewed
+
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 3
+              - column:
+                  name: name
+                  value: Approved
+              - column:
+                  name: description
+                  value: Loan application approved
+
+
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 4
+              - column:
+                  name: name
+                  value: Cancelled
+              - column:
+                  name: description
+                  value: Loan application cancelled
+
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 5
+              - column:
+                  name: name
+                  value: Declined
+              - column:
+                  name: description
+                  value: Loan application declined
+
+  - changeSet:
+      id: 5
+      author: Juan Angarita
+      changes:
+        - insert:
+            tableName: loan_type
+            columns:
+              - column:
+                  name: loan_type_id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: Personal Loan
+              - column:
+                  name: min_amount
+                  valueNumeric: 1000000.00
+              - column:
+                  name: max_amount
+                  valueNumeric: 10000000.00
+              - column:
+                  name: interest_rate
+                  valueNumeric: 19.00
+              - column:
+                  name: auto_validation
+                  valueBoolean: false
+
+        - insert:
+            tableName: loan_type
+            columns:
+              - column:
+                  name: loan_type_id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: Car Loan
+              - column:
+                  name: min_amount
+                  valueNumeric: 3000000.00
+              - column:
+                  name: max_amount
+                  valueNumeric: 500000000.00
+              - column:
+                  name: interest_rate
+                  valueNumeric: 15.00
+              - column:
+                  name: auto_validation
+                  valueBoolean: false

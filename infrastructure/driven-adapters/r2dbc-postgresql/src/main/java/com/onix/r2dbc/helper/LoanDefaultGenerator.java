@@ -9,11 +9,17 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 @Component
-public class LoanIdGenerator implements BeforeConvertCallback<LoanEntity> {
+public class LoanDefaultGenerator implements BeforeConvertCallback<LoanEntity> {
     @Override
     public Publisher<LoanEntity> onBeforeConvert(LoanEntity entity, SqlIdentifier table) {
-        if (entity.getLoanApplicationId() == null) {
-            entity.setLoanApplicationId(UUID.randomUUID());
+        if (entity.getLoanId() == null) {
+            entity.setLoanId(UUID.randomUUID());
+        }
+        if (entity.getStatusId() == null) {
+            entity.setStatusId(1);
+        }
+        if (entity.getLoanTypeId() == null) {
+            entity.setLoanTypeId(1);
         }
         return Mono.just(entity);
     }

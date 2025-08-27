@@ -20,7 +20,8 @@ public class LoanEntity {
     @Id
     private UUID loanId;
     private BigDecimal amount;
-    private Integer term;
+    private Integer termMonths;
+    private String documentNumber;
     private String email;
     private Integer loanTypeId;
     private Integer statusId;

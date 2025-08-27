@@ -8,6 +8,7 @@ import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
 public class LoanUseCase {
+
     private final LoanRepository loanRepository;
     private final LoanValidator loanValidator;
 

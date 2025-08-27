@@ -14,7 +14,7 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @ToString
 public class Loan {
-    private UUID applicationId;
+    private UUID loanId;
     private Long amount;
     private int termMonths;
     private String email;

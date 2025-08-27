@@ -1,5 +1,5 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/changes/001-create-users-table.yaml
+      file: db/changelog/changes/001-create-loan-application-tables.yaml
   - include:
-      file: db/changelog/changes/002-create-rol-table.yaml
+      file: db/changelog/changes/002-insert-default-values.yaml
