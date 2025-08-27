@@ -1,7 +1,9 @@
 package com.onix.api.dto;
 
+import java.math.BigDecimal;
+
 public record CreateLoanDTO(
-        Long amount,
+        BigDecimal amount,
         Integer termMonths,
         String email,
         String documentNumber,
