@@ -1,8 +1,8 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
-    name: "LoanAplication"
+    name: "LoanApplication"
   devtools:
     add-properties: false
   h2:
@@ -11,6 +11,12 @@ spring:
       path: "/h2"
   profiles:
     include: null
+  liquibase:
+    url: jdbc:postgresql://localhost:5432/loan_application
+    user: admin
+    password: Admin1234!
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: true
 management:
   endpoints:
     web:
@@ -22,3 +28,29 @@ management:
         enabled: true
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+
+loan:
+  paths:
+    base: "/api/v1"
+    loans: "/loans"
+
+adapters:
+  r2dbc:
+    postgres:
+      host: "localhost"
+      port: 5432
+      database: "authentication"
+      username: "admin"
+      password: "Admin1234!"
+      schema: "public"
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+
+logging:
+  level:
+    root: INFO
+    com.onix: TRACE
