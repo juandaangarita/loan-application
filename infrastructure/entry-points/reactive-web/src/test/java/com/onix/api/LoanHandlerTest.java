@@ -12,7 +12,7 @@ import com.onix.api.dto.LoanDTO;
 import com.onix.api.mapper.LoanMapper;
 import com.onix.api.validator.LoggingLoanValidator;
 import com.onix.model.loanapplication.Loan;
-import com.onix.usecase.exception.ValidationException;
+import com.onix.model.exception.ValidationException;
 import com.onix.usecase.loanapplication.LoanUseCase;
 import java.math.BigDecimal;
 import java.net.URI;

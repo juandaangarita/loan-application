@@ -4,7 +4,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.onix.model.loanapplication.Loan;
-import com.onix.usecase.exception.ValidationException;
+import com.onix.model.exception.ValidationException;
 import com.onix.usecase.loanapplication.validator.LoanValidator;
 import java.math.BigDecimal;
 import java.util.List;

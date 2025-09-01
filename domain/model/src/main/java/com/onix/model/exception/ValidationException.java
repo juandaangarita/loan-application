@@ -1,4 +1,4 @@
-package com.onix.usecase.exception;
+package com.onix.model.exception;
 
 import java.util.List;
 

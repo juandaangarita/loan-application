@@ -1,4 +1,4 @@
-package com.onix.usecase.exception;
+package com.onix.model.exception;
 
 public class InvalidLoanTypeException extends RuntimeException {
     public InvalidLoanTypeException(Integer loanTypeId) {

@@ -1,7 +1,7 @@
 package com.onix.usecase.loanapplication.validator;
 
 import com.onix.model.loanapplication.Loan;
-import com.onix.usecase.exception.ValidationException;
+import com.onix.model.exception.ValidationException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

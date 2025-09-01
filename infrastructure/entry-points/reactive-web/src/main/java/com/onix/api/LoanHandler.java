@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
@@ -25,6 +26,7 @@ public class LoanHandler {
     private final LoanConfig loanConfig;
     private final LoanMapper loanMapper;
     private final LoggingLoanValidator loggingLoanValidator;
+    private final TransactionalOperator transactionalOperator;
 
     public Mono<ServerResponse> listenSaveLoan(ServerRequest request) {
         log.trace("Submitted new loan application request");
@@ -33,6 +35,7 @@ public class LoanHandler {
                 .map(loanMapper::toModel)
                 .flatMap(loan -> loggingLoanValidator.validate(loan).thenReturn(loan))
                 .flatMap(loanUseCase::createLoanApplication)
+                .as(transactionalOperator::transactional)
                 .map(loanMapper::toDto)
                 .doOnNext(loanDTO -> log.debug("Loan submitted successfully with ID: {}", loanDTO.loanId()))
                 .flatMap(loanDTO -> ServerResponse

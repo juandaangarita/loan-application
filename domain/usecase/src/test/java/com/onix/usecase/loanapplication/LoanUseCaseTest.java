@@ -4,15 +4,14 @@ package com.onix.usecase.loanapplication;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 
 import com.onix.model.loanapplication.Loan;
 import com.onix.model.loanapplication.gateways.LoanRepository;
 import com.onix.model.loantype.LoanType;
 import com.onix.model.loantype.gateways.LoanTypeRepository;
-import com.onix.usecase.exception.InvalidAmountLoanException;
-import com.onix.usecase.exception.InvalidLoanTypeException;
-import com.onix.usecase.exception.ValidationException;
+import com.onix.model.exception.InvalidAmountLoanException;
+import com.onix.model.exception.InvalidLoanTypeException;
+import com.onix.model.exception.ValidationException;
 import com.onix.usecase.loanapplication.validator.LoanValidator;
 import java.math.BigDecimal;
 import java.util.List;
