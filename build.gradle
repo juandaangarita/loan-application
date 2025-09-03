@@ -8,6 +8,7 @@ buildscript {
         lombokVersion = '1.18.38'
         mapstructVersion = '1.6.3'
         springDocVersion = '2.5.0'
+        jjwtVersion = '0.13.0'
 	}
 }
 

@@ -10,6 +10,7 @@ import com.onix.model.loanapplication.gateways.UserClient;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -24,13 +25,14 @@ public class RestConsumer implements UserClient {
 
     @Override
     @CircuitBreaker(name = "userService", fallbackMethod = "fallbackValidateUser")
-    public Mono<UserDTO> validateUserRegistered(String email, String documentNumber) {
+    public Mono<UserDTO> validateUserRegistered(String email, String documentNumber, String token) {
         String path = userPropertiesConfig.getValidateUserPath()
                 + "?email=" + email
                 + "&documentNumber=" + documentNumber;
         log.debug("Calling user service to validate user with email: {} and documentNumber: {}", email, documentNumber);
         return client.get()
                 .uri(path)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .retrieve()
                 .bodyToMono(UserResponse.class)
                 .doOnNext(response -> log.debug("Received response: {}", response))

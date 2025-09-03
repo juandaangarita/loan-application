@@ -19,9 +19,9 @@ public class LoanUseCase {
     private final LoanTypeRepository loanTypeRepository;
     private final UserClient userClient;
 
-    public Mono<Loan> createLoanApplication(Loan loan) {
+    public Mono<Loan> createLoanApplication(Loan loan, String token) {
         return loanValidator.validate(loan)
-                .then(validateUser(loan))
+                .then(validateUser(loan, token))
                 .then(validateLoan(loan))
                 .then(loanRepository.saveLoanApplication(loan));
     }
@@ -39,8 +39,8 @@ public class LoanUseCase {
                 .then();
     }
 
-    public Mono<Void> validateUser(Loan loan) {
-        return userClient.validateUserRegistered(loan.getEmail(), loan.getDocumentNumber())
+    public Mono<Void> validateUser(Loan loan, String token) {
+        return userClient.validateUserRegistered(loan.getEmail(), loan.getDocumentNumber(), token)
                 .flatMap(isRegistered -> {
                     if (isRegistered == null) {
                         return Mono.error(new UnregisteredUserException(loan.getEmail(), loan.getDocumentNumber()));

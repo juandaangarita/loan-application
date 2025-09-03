@@ -31,6 +31,14 @@ management:
       enabled: true
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+security:
+  jwt:
+    secretKey: mysupersecretdevelopmentkey1234567890!
+    expiration: 3600000
+    defaultRole: ROLE_USER
+    defaultAdminRole: ROLE_ADMIN
+    tokenPrefix: "Bearer "
+    defaultPassword: Password123!
 loan:
   paths:
     base: "/api/v1"

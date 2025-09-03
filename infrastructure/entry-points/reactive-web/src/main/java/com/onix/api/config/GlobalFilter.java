@@ -9,6 +9,7 @@ import com.onix.model.exception.InvalidLoanTypeException;
 import com.onix.model.exception.UnregisteredUserException;
 import com.onix.model.exception.AuthenticationServiceUnavailableException;
 import com.onix.model.exception.ValidationException;
+import com.onix.security.exception.InvalidCredentialsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -70,6 +71,11 @@ public class GlobalFilter implements WebFilter {
                 log.debug("Illegal argument exception: {}", illegalArgumentException.getMessage());
                 status = HttpStatus.BAD_REQUEST;
                 body = ApiResponse.error(status.value(), VALIDATION_ERROR, ex.getMessage());
+            }
+            case InvalidCredentialsException invalidCredentialsException -> {
+                log.debug("Invalid credentials: {}", invalidCredentialsException.getMessage());
+                status = HttpStatus.UNAUTHORIZED;
+                body = ApiResponse.error(status.value(), "Unauthorized", ex.getMessage());
             }
             case ServerWebInputException serverWebInputException -> {
                 log.debug("Server web input exception: {}", serverWebInputException.getMessage());

@@ -51,7 +51,7 @@ class RestConsumerTest {
                 .setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .setResponseCode(HttpStatus.OK.value())
                 .setBody("{\"email\" : \"email\"}"));
-        var response = restConsumer.validateUserRegistered("email@email.com", "1234567890");
+        var response = restConsumer.validateUserRegistered("email@email.com", "1234567890", "mockedToken123");
 
         StepVerifier.create(response)
                 .expectNextMatches(objectResponse -> objectResponse.email().equals("email"))
