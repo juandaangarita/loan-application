@@ -1,12 +1,14 @@
 package com.onix.api.openapi;
 
-import static org.springdoc.core.fn.builders.apiresponse.Builder.responseBuilder;
 import static org.springdoc.core.fn.builders.content.Builder.contentBuilder;
+import static org.springdoc.core.fn.builders.exampleobject.Builder.exampleOjectBuilder;
 import static org.springdoc.core.fn.builders.requestbody.Builder.requestBodyBuilder;
 import static org.springdoc.core.fn.builders.schema.Builder.schemaBuilder;
 
-import com.onix.api.dto.ApiResponse;
 import com.onix.api.dto.CreateLoanDTO;
+import com.onix.api.dto.LoanDTO;
+import java.math.BigDecimal;
+import java.util.UUID;
 import lombok.experimental.UtilityClass;
 import org.springdoc.core.fn.builders.operation.Builder;
 import org.springframework.http.MediaType;
@@ -15,9 +17,22 @@ import org.springframework.http.MediaType;
 public class LoanOpenApi {
 
     public void createLoan(Builder builder) {
-        var jsonContent = contentBuilder()
-                .mediaType(MediaType.APPLICATION_JSON_VALUE)
-                .schema(schemaBuilder().implementation(ApiResponse.class));
+        var successResponse = new LoanDTO(
+                UUID.randomUUID(),
+                BigDecimal.valueOf(9000),
+                12,
+                "email@email.com",
+                "1234567890",
+                1,
+                1);
+
+        var requestExample = new CreateLoanDTO(
+                BigDecimal.valueOf(9000),
+                12,
+                "email@email.com",
+                "1234567890",
+                1
+        );
 
         builder
                 .operationId("submitLoan")
@@ -28,21 +43,13 @@ public class LoanOpenApi {
                         .required(true)
                         .content(contentBuilder()
                                 .mediaType(MediaType.APPLICATION_JSON_VALUE)
-                                .schema(schemaBuilder().implementation(CreateLoanDTO.class))))
-                .response(responseBuilder()
-                        .responseCode("201").description("Loan created successfully")
-                        .content(jsonContent))
-                .response(responseBuilder()
-                        .responseCode("400").description("Validation error")
-                        .content(jsonContent))
-                .response(responseBuilder()
-                        .responseCode("409").description("Conflict error")
-                        .content(jsonContent))
-                .response(responseBuilder()
-                        .responseCode("500").description("Internal server error")
-                        .content(jsonContent))
-                .response(responseBuilder()
-                        .responseCode("503").description("Service unavailable")
-                        .content(jsonContent));
+                                .schema(schemaBuilder().implementation(CreateLoanDTO.class))
+                                .example(exampleOjectBuilder()
+                                        .value(UtilOpenApi.createObjectToString(requestExample)))))
+                .response(UtilOpenApi.responseApiBuilder(201, "Loan created successfully", successResponse))
+                .response(UtilOpenApi.responseApiBuilder(400, "Validation error", null))
+                .response(UtilOpenApi.responseApiBuilder(409, "Conflict error", null))
+                .response(UtilOpenApi.responseApiBuilder(500, "Internal server error", null))
+                .response(UtilOpenApi.responseApiBuilder(503, "Service unavailable", null));;
     }
 }

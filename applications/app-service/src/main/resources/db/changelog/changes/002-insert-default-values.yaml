@@ -77,10 +77,23 @@ databaseChangeLog:
                   valueNumeric: 5
               - column:
                   name: name
-                  value: Declined
+                  value: Rejected
               - column:
                   name: description
-                  value: Loan application declined
+                  value: Loan application rejected
+
+        - insert:
+            tableName: status
+            columns:
+              - column:
+                  name: status_id
+                  valueNumeric: 6
+              - column:
+                  name: name
+                  value: Manually review
+              - column:
+                  name: description
+                  value: Loan application needs manually review
 
   - changeSet:
       id: 5
