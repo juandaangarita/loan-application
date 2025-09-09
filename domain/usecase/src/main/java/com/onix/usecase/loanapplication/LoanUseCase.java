@@ -1,6 +1,8 @@
 package com.onix.usecase.loanapplication;
 
 import com.onix.model.loanapplication.Loan;
+import com.onix.model.loanapplication.dto.LoanPageableDTO;
+import com.onix.model.loanapplication.dto.UserDTO;
 import com.onix.model.loanapplication.gateways.LoanRepository;
 import com.onix.model.loanapplication.gateways.UserClient;
 import com.onix.model.loantype.gateways.LoanTypeRepository;
@@ -8,7 +10,12 @@ import com.onix.model.exception.InvalidAmountLoanException;
 import com.onix.model.exception.InvalidLoanTypeException;
 import com.onix.model.exception.UnregisteredUserException;
 import com.onix.usecase.loanapplication.validator.LoanValidator;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -46,6 +53,39 @@ public class LoanUseCase {
                         return Mono.error(new UnregisteredUserException(loan.getEmail(), loan.getDocumentNumber()));
                     }
                     return Mono.empty();
+                });
+    }
+
+    public Flux<LoanPageableDTO> getPendingLoans(int page, int size, String sortBy, String filter, String token) {
+        return loanRepository.findPendingLoans(page, size, sortBy, filter)
+                .collectList()
+                .flatMapMany(loans -> {
+                    Set<String> emails = loans.stream()
+                            .map(LoanPageableDTO::email)
+                            .collect(Collectors.toSet());
+
+                    return userClient.getUsersByEmails(emails, token)
+                            .flatMapMany(userMap -> Flux.fromIterable(loans)
+                                    .map(loan -> {
+                                        UserDTO user = userMap.get(loan.email());
+                                        return new LoanPageableDTO(
+                                                loan.loanId(),
+                                                loan.amount(),
+                                                loan.termMonths(),
+                                                loan.email(),
+                                                user != null ? user.name() + " " + user.lastname() : null,
+                                                loan.loanType(),
+                                                loan.interestRate(),
+                                                loan.status(),
+                                                user != null ? user.baseSalary() : null,
+                                                loan.amount().divide(
+                                                        BigDecimal.valueOf(loan.termMonths()),
+                                                        2,
+                                                        RoundingMode.HALF_UP
+                                                )
+                                        );
+                                    })
+                            );
                 });
     }
 }

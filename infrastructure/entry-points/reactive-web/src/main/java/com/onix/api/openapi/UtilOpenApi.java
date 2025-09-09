@@ -8,7 +8,7 @@ import static org.springdoc.core.fn.builders.schema.Builder.schemaBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.onix.api.dto.ApiResponse;
+import com.onix.shared.dto.ApiResponse;
 import lombok.experimental.UtilityClass;
 import org.springframework.http.MediaType;
 

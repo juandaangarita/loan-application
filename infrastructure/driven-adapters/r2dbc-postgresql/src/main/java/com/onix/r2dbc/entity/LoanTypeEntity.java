@@ -14,7 +14,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @Setter
 @Builder
-@Table("loan_type")
+@Table("loan_types")
 public class LoanTypeEntity {
     @Id
     private Integer loanTypeId;

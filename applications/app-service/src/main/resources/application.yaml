@@ -68,6 +68,7 @@ adapter:
     timeout: 5000
     baseUrl: "http://localhost:8080/api/v1/users"
     validateUserPath: "/validate"
+    batchUsersPath: "/batch"
 resilience4j:
   circuitbreaker:
     instances:

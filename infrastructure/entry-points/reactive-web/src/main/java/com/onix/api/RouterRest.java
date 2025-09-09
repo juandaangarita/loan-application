@@ -21,6 +21,7 @@ public class RouterRest {
     public RouterFunction<ServerResponse> routerFunction(LoanHandler handler) {
         return route()
                 .POST(loanConfig.getLoan(), loanHandler::listenSaveLoan, LoanOpenApi::createLoan)
+                .GET(loanConfig.getLoan(), loanHandler::listenFilterLoans, LoanOpenApi::createLoan)
         .build();
     }
 }

@@ -37,6 +37,7 @@ public class JwtProvider {
     }
 
     public Claims getClaims(String token) {
+        validate(token);
         return Jwts.parser()
                 .verifyWith(getKey(jwtConfigProperties.secretKey()))
                 .build()
@@ -45,6 +46,7 @@ public class JwtProvider {
     }
 
     public String getSubject(String token) {
+        validate(token);
         return Jwts.parser()
                 .verifyWith(getKey(jwtConfigProperties.secretKey()))
                 .build()

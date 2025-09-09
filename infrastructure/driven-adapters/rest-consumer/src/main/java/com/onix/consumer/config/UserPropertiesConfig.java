@@ -11,5 +11,5 @@ public class UserPropertiesConfig {
     private String baseUrl;
     private String validateUserPath;
     private int timeout;
-
+    private String batchUsersPath;
 }

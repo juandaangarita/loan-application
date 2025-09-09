@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Juan Angarita
       changes:
         - createTable:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
@@ -27,7 +27,7 @@ databaseChangeLog:
       author: Juan Angarita
       changes:
         - createTable:
-            tableName: loan_type
+            tableName: loan_types
             columns:
               - column:
                   name: loan_type_id
@@ -102,11 +102,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     foreignKeyName: fk_loan_application_status
-                    references: status(status_id)
+                    references: loan_statuses(status_id)
               - column:
                   name: loan_type_id
                   type: INT
                   constraints:
                     nullable: false
                     foreignKeyName: fk_loan_application_loan_type
-                    references: loan_type(loan_type_id)
+                    references: loan_types(loan_type_id)

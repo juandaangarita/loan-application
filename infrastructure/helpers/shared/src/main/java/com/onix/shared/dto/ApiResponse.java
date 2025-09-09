@@ -1,4 +1,4 @@
-package com.onix.api.dto;
+package com.onix.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.Instant;

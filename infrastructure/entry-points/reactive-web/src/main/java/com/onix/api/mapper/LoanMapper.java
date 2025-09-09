@@ -3,6 +3,7 @@ package com.onix.api.mapper;
 import com.onix.api.dto.CreateLoanDTO;
 import com.onix.api.dto.LoanDTO;
 import com.onix.model.loanapplication.Loan;
+import com.onix.model.loanapplication.dto.LoanPageableDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,4 +15,6 @@ public interface LoanMapper {
     @Mapping(target = "loanId", ignore = true)
     @Mapping(target = "loanStatusId", ignore = true)
     Loan toModel(CreateLoanDTO dto);
+
+    LoanPageableDTO toPageableDto(Loan loan);
 }

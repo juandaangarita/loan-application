@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Juan Angarita
       changes:
         - insert:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
@@ -17,20 +17,20 @@ databaseChangeLog:
                   value: Loan application created
 
         - insert:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
                   valueNumeric: 1
               - column:
                   name: name
-                  value: Review Pending
+                  value: Pending Review
               - column:
                   name: description
                   value: Loan application review in process
 
         - insert:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
@@ -43,7 +43,7 @@ databaseChangeLog:
                   value: Loan application reviewed
 
         - insert:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
@@ -57,7 +57,7 @@ databaseChangeLog:
 
 
         - insert:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
@@ -70,7 +70,7 @@ databaseChangeLog:
                   value: Loan application cancelled
 
         - insert:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
@@ -83,7 +83,7 @@ databaseChangeLog:
                   value: Loan application rejected
 
         - insert:
-            tableName: status
+            tableName: loan_statuses
             columns:
               - column:
                   name: status_id
@@ -100,7 +100,7 @@ databaseChangeLog:
       author: Juan Angarita
       changes:
         - insert:
-            tableName: loan_type
+            tableName: loan_types
             columns:
               - column:
                   name: loan_type_id
@@ -122,7 +122,7 @@ databaseChangeLog:
                   valueBoolean: false
 
         - insert:
-            tableName: loan_type
+            tableName: loan_types
             columns:
               - column:
                   name: loan_type_id

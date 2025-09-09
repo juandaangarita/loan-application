@@ -3,13 +3,14 @@ package com.onix.api.config;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import com.onix.api.dto.ApiResponse;
 import com.onix.model.exception.InvalidAmountLoanException;
 import com.onix.model.exception.InvalidLoanTypeException;
 import com.onix.model.exception.UnregisteredUserException;
 import com.onix.model.exception.AuthenticationServiceUnavailableException;
 import com.onix.model.exception.ValidationException;
 import com.onix.security.exception.InvalidCredentialsException;
+import com.onix.security.exception.UnauthorizedClientException;
+import com.onix.shared.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -74,6 +75,11 @@ public class GlobalFilter implements WebFilter {
             }
             case InvalidCredentialsException invalidCredentialsException -> {
                 log.debug("Invalid credentials: {}", invalidCredentialsException.getMessage());
+                status = HttpStatus.UNAUTHORIZED;
+                body = ApiResponse.error(status.value(), "Unauthorized", ex.getMessage());
+            }
+            case UnauthorizedClientException unauthorizedClientException -> {
+                log.debug(unauthorizedClientException.getMessage());
                 status = HttpStatus.UNAUTHORIZED;
                 body = ApiResponse.error(status.value(), "Unauthorized", ex.getMessage());
             }
