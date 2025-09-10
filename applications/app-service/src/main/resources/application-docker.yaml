@@ -1,0 +1,26 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: "LoanApplication"
+  liquibase:
+    url: "jdbc:postgresql://postgres:5432/loan"
+    user: "admin"
+    password: "Admin1234!"
+    change-log: "classpath:db/changelog/db.changelog-master.yaml"
+    enabled: true
+adapters:
+  r2dbc:
+    postgres:
+      host: "postgres"
+      port: 5432
+      database: "loan"
+      username: "admin"
+      password: "Admin1234!"
+      schema: "public"
+adapter:
+  user:
+    timeout: 5000
+    baseUrl: "http://authentication-service:8080/api/v1/users"
+    validateUserPath: "/validate"
+    batchUsersPath: "/batch"
