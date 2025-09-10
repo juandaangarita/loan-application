@@ -33,12 +33,12 @@ cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
 security:
   jwt:
-    secretKey: mysupersecretdevelopmentkey1234567890!
+    secretKey: "mysupersecretdevelopmentkey1234567890!"
     expiration: 3600000
-    defaultRole: ROLE_USER
-    defaultAdminRole: ROLE_ADMIN
+    defaultRole: "ROLE_USER"
+    defaultAdminRole: "ROLE_ADMIN"
     tokenPrefix: "Bearer "
-    defaultPassword: Password123!
+    defaultPassword: "Password123!"
 loan:
   paths:
     base: "/api/v1"
@@ -69,6 +69,10 @@ adapter:
     baseUrl: "http://localhost:8080/api/v1/users"
     validateUserPath: "/validate"
     batchUsersPath: "/batch"
+  sqs:
+    region: "us-east-1"
+    queueUrl: "https://sqs.us-east-1.amazonaws.com/767397782203/loan-status-queue"
+    endpoint: "http://localhost:4566"
 resilience4j:
   circuitbreaker:
     instances:

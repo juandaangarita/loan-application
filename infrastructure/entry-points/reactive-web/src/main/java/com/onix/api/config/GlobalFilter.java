@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.onix.model.exception.InvalidAmountLoanException;
 import com.onix.model.exception.InvalidLoanTypeException;
+import com.onix.model.exception.LoanNotFoundException;
 import com.onix.model.exception.UnregisteredUserException;
 import com.onix.model.exception.AuthenticationServiceUnavailableException;
 import com.onix.model.exception.ValidationException;
@@ -81,6 +82,11 @@ public class GlobalFilter implements WebFilter {
             case UnauthorizedClientException unauthorizedClientException -> {
                 log.debug(unauthorizedClientException.getMessage());
                 status = HttpStatus.UNAUTHORIZED;
+                body = ApiResponse.error(status.value(), VALIDATION_ERROR, ex.getMessage());
+            }
+            case LoanNotFoundException loanNotFoundException -> {
+                log.debug("Loan Not Found: {}", loanNotFoundException.getMessage());
+                status = HttpStatus.BAD_REQUEST;
                 body = ApiResponse.error(status.value(), "Unauthorized", ex.getMessage());
             }
             case ServerWebInputException serverWebInputException -> {

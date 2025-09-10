@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class LoanReactiveRepositoryAdapterTest {
+class LoanStatusReactiveRepositoryAdapterTest {
     // TODO: change four you own tests
 
     @InjectMocks

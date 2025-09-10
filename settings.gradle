@@ -30,3 +30,7 @@ include ':security'
 project(':security').projectDir = file('./infrastructure/driven-adapters/security')
 include ':shared'
 project(':shared').projectDir = file('./infrastructure/helpers/shared')
+include ':metrics'
+project(':metrics').projectDir = file('./infrastructure/helpers/metrics')
+include ':sqs-sender'
+project(':sqs-sender').projectDir = file('./infrastructure/driven-adapters/sqs-sender')
