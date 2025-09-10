@@ -1,0 +1,14 @@
+package com.onix.api.dto;
+
+import java.math.BigDecimal;
+import java.util.UUID;
+
+public record LoanDTO (
+        UUID loanId,
+        BigDecimal amount,
+        Integer termMonths,
+        String email,
+        String documentNumber,
+        Integer loanStatusId,
+        Integer loanTypeId) {
+}

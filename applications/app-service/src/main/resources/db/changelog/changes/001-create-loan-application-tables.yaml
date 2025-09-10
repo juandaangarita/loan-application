@@ -1,0 +1,112 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Juan Angarita
+      changes:
+        - createTable:
+            tableName: loan_statuses
+            columns:
+              - column:
+                  name: status_id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 2
+      author: Juan Angarita
+      changes:
+        - createTable:
+            tableName: loan_types
+            columns:
+              - column:
+                  name: loan_type_id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: min_amount
+                  type: DECIMAL(15,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: max_amount
+                  type: DECIMAL(15,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: interest_rate
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: auto_validation
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 3
+      author: Juan Angarita
+      changes:
+        - createTable:
+            tableName: loan_application
+            columns:
+              - column:
+                  name: loan_id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL(15,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: term_months
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: document_number
+                  type: VARCHAR(20)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_loan_application_status
+                    references: loan_statuses(status_id)
+              - column:
+                  name: loan_type_id
+                  type: INT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_loan_application_loan_type
+                    references: loan_types(loan_type_id)

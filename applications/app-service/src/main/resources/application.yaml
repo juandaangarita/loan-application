@@ -1,0 +1,101 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: "LoanApplication"
+  devtools:
+    add-properties: false
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
+  profiles:
+    include: null
+  liquibase:
+    url: "jdbc:postgresql://localhost:5432/loan"
+    user: "admin"
+    password: "Admin1234!"
+    change-log: "classpath:db/changelog/db.changelog-master.yaml"
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    circuitbreakers:
+      enabled: true
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080"
+security:
+  jwt:
+    secretKey: mysupersecretdevelopmentkey1234567890!
+    expiration: 3600000
+    defaultRole: ROLE_USER
+    defaultAdminRole: ROLE_ADMIN
+    tokenPrefix: "Bearer "
+    defaultPassword: Password123!
+loan:
+  paths:
+    base: "/api/v1"
+    loan: "/loan"
+    type: "/type"
+    status: "/status"
+adapters:
+  r2dbc:
+    postgres:
+      host: "localhost"
+      port: 5432
+      database: "loan"
+      username: "admin"
+      password: "Admin1234!"
+      schema: "public"
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+  api-docs:
+    path: "/api-docs"
+logging:
+  level:
+    root: "INFO"
+    com.onix: "TRACE"
+adapter:
+  user:
+    timeout: 5000
+    baseUrl: "http://localhost:8080/api/v1/users"
+    validateUserPath: "/validate"
+    batchUsersPath: "/batch"
+resilience4j:
+  circuitbreaker:
+    instances:
+      userService:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
+      testGet:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
+      testPost:
+        registerHealthIndicator: true
+        failureRateThreshold: 50
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: "2s"
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        waitDurationInOpenState: "10s"
