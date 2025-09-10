@@ -76,7 +76,7 @@ public class LoanHandler {
         int page = request.queryParam("page").map(Integer::parseInt).orElse(0);
         int size = request.queryParam("size").map(Integer::parseInt).orElse(2);
         String sortBy = request.queryParam("sortBy").orElse("email");
-        String filter = request.queryParam("filter").orElse("Review Pending");
+        String filter = request.queryParam("status").orElse("Pending Review");
         return loanUseCase.getPendingLoans(page, size, sortBy, filter, token)
                 .as(transactionalOperator::transactional)
                 .doOnNext(loanDTO -> log.debug("Loan retrieved successfully with ID: {}", loanDTO.loanId()))

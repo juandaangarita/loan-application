@@ -31,7 +31,7 @@ public class LoanRepositoryAdapter extends ReactiveAdapterOperations<
     @Override
     public Flux<LoanPageableDTO> findPendingLoans(int page, int size, String sortBy, String filter) {
         Pageable pageable = PageRequest.of(page, size);
-        return repository.findPageablePendingLoans(pageable)
+        return repository.findPageablePendingLoans(filter, pageable)
                 .map(entity -> mapper.map(entity, LoanPageableDTO.class));
     }
 }
