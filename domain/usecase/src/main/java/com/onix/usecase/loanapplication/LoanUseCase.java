@@ -2,6 +2,7 @@ package com.onix.usecase.loanapplication;
 
 import com.onix.model.loanapplication.Loan;
 import com.onix.model.loanapplication.dto.LoanPageableDTO;
+import com.onix.model.loanapplication.dto.PageDTO;
 import com.onix.model.loanapplication.dto.UserDTO;
 import com.onix.model.loanapplication.gateways.LoanRepository;
 import com.onix.model.loanapplication.gateways.UserClient;
@@ -12,6 +13,7 @@ import com.onix.model.exception.UnregisteredUserException;
 import com.onix.usecase.loanapplication.validator.LoanValidator;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -56,36 +58,55 @@ public class LoanUseCase {
                 });
     }
 
-    public Flux<LoanPageableDTO> getPendingLoans(int page, int size, String sortBy, String filter, String token) {
-        return loanRepository.findPendingLoans(page, size, sortBy, filter)
-                .collectList()
-                .flatMapMany(loans -> {
+    public Mono<PageDTO<LoanPageableDTO>> getPendingLoans(int page, int size, String sortBy, String filter, String token) {
+        Mono<List<LoanPageableDTO>> loansMono = loanRepository.findPendingLoans(page, size, sortBy, filter).collectList();
+        Mono<Long> countMono = loanRepository.countPendingLoans(filter);
+
+        return Mono.zip(loansMono, countMono)
+                .flatMap(tuple -> {
+                    List<LoanPageableDTO> loans = tuple.getT1();
+                    long totalElements = tuple.getT2();
+
                     Set<String> emails = loans.stream()
                             .map(LoanPageableDTO::email)
                             .collect(Collectors.toSet());
 
                     return userClient.getUsersByEmails(emails, token)
-                            .flatMapMany(userMap -> Flux.fromIterable(loans)
-                                    .map(loan -> {
-                                        UserDTO user = userMap.get(loan.email());
-                                        return new LoanPageableDTO(
-                                                loan.loanId(),
-                                                loan.amount(),
-                                                loan.termMonths(),
-                                                loan.email(),
-                                                user != null ? user.name() + " " + user.lastname() : null,
-                                                loan.loanType(),
-                                                loan.interestRate(),
-                                                loan.status(),
-                                                user != null ? user.baseSalary() : null,
-                                                loan.amount().divide(
-                                                        BigDecimal.valueOf(loan.termMonths()),
-                                                        2,
-                                                        RoundingMode.HALF_UP
-                                                )
-                                        );
-                                    })
-                            );
+                            .map(userMap -> {
+                                List<LoanPageableDTO> enrichedLoans = loans.stream()
+                                        .map(loan -> {
+                                            UserDTO user = userMap.get(loan.email());
+                                            return new LoanPageableDTO(
+                                                    loan.loanId(),
+                                                    loan.amount(),
+                                                    loan.termMonths(),
+                                                    loan.email(),
+                                                    user != null ? user.name() + " " + user.lastname() : null,
+                                                    loan.loanType(),
+                                                    loan.interestRate(),
+                                                    loan.status(),
+                                                    user != null ? user.baseSalary() : null,
+                                                    loan.amount().divide(
+                                                            BigDecimal.valueOf(loan.termMonths()),
+                                                            2,
+                                                            RoundingMode.HALF_UP
+                                                    )
+                                            );
+                                        })
+                                        .toList();
+
+                                int totalPages = (int) Math.ceil((double) totalElements / size);
+
+                                return new PageDTO<>(
+                                        enrichedLoans,
+                                        page,
+                                        size,
+                                        totalElements,
+                                        totalPages,
+                                        page < totalPages - 1,
+                                        page > 0
+                                );
+                            });
                 });
     }
 }

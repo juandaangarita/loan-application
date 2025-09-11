@@ -34,4 +34,9 @@ public class LoanRepositoryAdapter extends ReactiveAdapterOperations<
         return repository.findPageablePendingLoans(filter, pageable)
                 .map(entity -> mapper.map(entity, LoanPageableDTO.class));
     }
+
+    @Override
+    public Mono<Long> countPendingLoans(String filter) {
+        return repository.countPendingLoans(filter);
+    }
 }
