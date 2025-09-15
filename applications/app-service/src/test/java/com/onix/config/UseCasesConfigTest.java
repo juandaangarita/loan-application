@@ -1,6 +1,7 @@
 package com.onix.config;
 
 import com.onix.model.loanapplication.gateways.LoanRepository;
+import com.onix.model.loanapplication.gateways.LoanStatusPublisher;
 import com.onix.model.loanapplication.gateways.UserClient;
 import com.onix.model.loanstatus.gateways.LoanStatusRepository;
 import com.onix.model.loantype.gateways.LoanTypeRepository;
@@ -64,6 +65,11 @@ class UseCasesConfigTest {
         @Bean
         public LoanValidator loanValidator() {
             return mock(LoanValidator.class);
+        }
+
+        @Bean
+        public LoanStatusPublisher loanStatusPublisher() {
+            return mock(LoanStatusPublisher.class);
         }
     }
 
