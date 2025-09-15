@@ -1,6 +1,0 @@
-loan:
-  paths:
-    base: "/api/v1"
-    loan: "/loan"
-    type: "/type"
-    status: "/status"

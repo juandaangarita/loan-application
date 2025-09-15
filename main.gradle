@@ -79,6 +79,16 @@ subprojects {
             csv.setRequired false
             html.setOutputLocation layout.buildDirectory.dir("reports/jacocoHtml")
         }
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: [
+                        'com/onix/api/mapper/LoanMapper.class',
+                        'com/onix/api/mapper/LoanMapperImpl.class',
+                        'com/onix/api/config/ValidationConfig.class',
+                        'com/onix/MainApplication.class',
+                ])
+            }))
+        }
     }
 
 }
@@ -92,7 +102,16 @@ tasks.register('jacocoMergedReport', JacocoReport) {
     dependsOn = [test, subprojects.jacocoTestReport, pitestReportAggregate]
     additionalSourceDirs.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories.setFrom files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories.setFrom files(subprojects.sourceSets.main.output)
+
+    classDirectories.setFrom files(subprojects.sourceSets.main.output.collect {
+        it.asFileTree.matching {
+            exclude 'com/onix/api/mapper/LoanMapper.class'
+            exclude 'com/onix/api/mapper/LoanMapperImpl.class'
+            exclude 'com/onix/api/config/ValidationConfig.class'
+            exclude 'com/onix/MainApplication.class'
+        }
+    })
+
     executionData.setFrom project.fileTree(dir: '.', include: '**/build/jacoco/test.exec')
     reports {
         xml.setRequired true

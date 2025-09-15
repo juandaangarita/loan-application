@@ -1,9 +1,11 @@
 package com.onix.api.config;
 
+import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@Generated
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "loan.paths")

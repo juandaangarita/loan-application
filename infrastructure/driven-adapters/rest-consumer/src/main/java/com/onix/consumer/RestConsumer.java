@@ -44,7 +44,12 @@ public class RestConsumer implements UserClient {
                 .retrieve()
                 .bodyToMono(UserResponse.class)
                 .doOnNext(response -> log.debug("Received response: {}", response))
-                .map(UserResponse::getData)
+                .flatMap(response -> {
+                    if (response.getData() == null) {
+                        return Mono.error(new UnregisteredUserException(email, documentNumber));
+                    }
+                    return Mono.just(response.getData());
+                })
                 .doOnNext(user -> log.info("User found: {}", user))
                 .switchIfEmpty(Mono.error(new UnregisteredUserException(email, documentNumber)));
     }
@@ -60,12 +65,11 @@ public class RestConsumer implements UserClient {
                 .map(ApiResponse::data);
     }
 
-    private Mono<UserDTO> fallbackValidateUser(String email, String documentNumber, Throwable ex) {
+    Mono<UserDTO> fallbackValidateUser(String email, String documentNumber, Throwable ex) {
         log.error("User service unavailable. email: {}, documentNumber: {}, cause: {}",
                 email, documentNumber, ex.getMessage());
 
         return Mono.error(new AuthenticationServiceUnavailableException(email, documentNumber));
     }
-
 
 }
