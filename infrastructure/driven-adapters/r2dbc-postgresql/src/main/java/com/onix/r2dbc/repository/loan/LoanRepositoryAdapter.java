@@ -37,6 +37,11 @@ public class LoanRepositoryAdapter extends ReactiveAdapterOperations<
     }
 
     @Override
+    public Mono<Long> countPendingLoans(String filter) {
+        return repository.countPendingLoans(filter);
+    }
+
+    @Override
     public Mono<Loan> findById(UUID loanId) {
         return super.findById(loanId.toString());
     }

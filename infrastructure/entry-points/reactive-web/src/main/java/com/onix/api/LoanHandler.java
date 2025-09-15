@@ -78,17 +78,19 @@ public class LoanHandler {
         int size = request.queryParam("size").map(Integer::parseInt).orElse(2);
         String sortBy = request.queryParam("sortBy").orElse("email");
         String filter = request.queryParam("status").orElse("Pending Review");
+
         return loanUseCase.getPendingLoans(page, size, sortBy, filter, token)
                 .as(transactionalOperator::transactional)
-                .doOnNext(loanDTO -> log.debug("Loan retrieved successfully with ID: {}", loanDTO.loanId()))
-                .collectList()
-                .flatMap(loanDTOs -> ServerResponse
+                .doOnNext(pageDTO -> log.debug("Loans retrieved successfully, page {} of {}",
+                        pageDTO.pageNumber(), pageDTO.totalPages()))
+                .flatMap(pageDTO -> ServerResponse
                         .ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(ApiResponse.success(
                                 HttpStatus.OK.value(),
                                 "Loans retrieved successfully",
-                                loanDTOs))
+                                pageDTO
+                        ))
                 );
     }
 
