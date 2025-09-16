@@ -96,10 +96,11 @@ public class LoanHandler {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<ServerResponse> updateLoanStatus(ServerRequest request) {
+        String token = request.headers().firstHeader(HttpHeaders.AUTHORIZATION);
 
         return request.bodyToMono(UpdateLoanStatusDTO.class)
                 .doOnNext(dto -> log.trace("Received request to update loan status to {} for loan with id: {}", dto.status(), dto.id()))
-                .flatMap(dto -> loanUseCase.updateLoanStatus(dto.id(), dto.status()))
+                .flatMap(dto -> loanUseCase.updateLoanStatus(dto.id(), dto.status(), token))
                 .as(transactionalOperator::transactional)
                 .map(loanMapper::toDto)
                 .doOnNext(updatedLoan -> log.debug("Loan {} status updated successfully", updatedLoan.loanId()))

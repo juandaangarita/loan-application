@@ -116,29 +116,41 @@ public class LoanUseCase {
                 });
     }
 
-    public Mono<Loan> updateLoanStatus(UUID loanId, String status) {
+    public Mono<Loan> updateLoanStatus(UUID loanId, String status, String token) {
         return loanRepository.findById(loanId)
                 .switchIfEmpty(Mono.error(new LoanNotFoundException(loanId)))
                 .flatMap(loan ->
                         getStatusIdByName(status)
                                 .flatMap(loanStatus -> {
-                                    if (loanStatus.getLoanStatusId().intValue() == loan.getLoanStatusId().intValue()) {
+                                    if (loanStatus.getStatusId().intValue() == loan.getStatusId()) {
                                         return Mono.error(new IllegalArgumentException(
                                                 "Loan is already in status: " + status
                                         ));
                                     }
-                                    loan.setLoanStatusId(loanStatus.getLoanStatusId());
+                                    loan.setStatusId(loanStatus.getStatusId());
                                     return loanRepository.saveLoanApplication(loan);
                                 })
                 )
                 .flatMap(updatedLoan ->
-                        sqsPublisher.sendStatusUpdate(updatedLoan, status)
-                                .thenReturn(updatedLoan)
-                );
+                        getUserNameByEmail(updatedLoan.getEmail(), token)
+                                .flatMap(userName ->
+                                                sqsPublisher.sendStatusUpdate(updatedLoan, status, userName)
+                                                        .thenReturn(updatedLoan)
+                                        ));
     }
 
     private Mono<LoanStatus> getStatusIdByName(String statusName) {
         return loanStatusRepository.getStatusByName(statusName)
                 .switchIfEmpty(Mono.error(new IllegalArgumentException("Invalid status name: " + statusName)));
+    }
+
+    private Mono<String> getUserNameByEmail(String email, String token) {
+        return userClient.validateUserRegistered(email, null, token)
+                .flatMap(user -> {
+                    if (user == null) {
+                        return Mono.error(new UnregisteredUserException(email, null));
+                    }
+                    return Mono.just(user.name() + " " + user.lastname());
+                });
     }
 }

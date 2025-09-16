@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebInputException;
@@ -88,6 +89,11 @@ public class GlobalFilter implements WebFilter {
                 log.debug("Loan Not Found: {}", loanNotFoundException.getMessage());
                 status = HttpStatus.BAD_REQUEST;
                 body = ApiResponse.error(status.value(), "Unauthorized", ex.getMessage());
+            }
+            case AuthorizationDeniedException authorizationDeniedException -> {
+                log.debug("Authorization Denied: {}", authorizationDeniedException.getMessage());
+                status = HttpStatus.FORBIDDEN;
+                body = ApiResponse.error(status.value(), "Forbidden", ex.getMessage());
             }
             case ServerWebInputException serverWebInputException -> {
                 log.debug("Server web input exception: {}", serverWebInputException.getMessage());

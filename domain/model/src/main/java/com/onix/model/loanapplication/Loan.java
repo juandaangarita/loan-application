@@ -21,5 +21,5 @@ public class Loan {
     private String email;
     private String documentNumber;
     private Integer loanTypeId;
-    private Integer loanStatusId;
+    private Integer statusId;
 }

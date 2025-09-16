@@ -33,14 +33,15 @@ public class SQSSender implements LoanStatusPublisher {
     }
 
     @Override
-    public Mono<Void> sendStatusUpdate(Loan loan, String status) {
+    public Mono<Void> sendStatusUpdate(Loan loan, String status, String username) {
         String message = """
             {
                 "loanId": "%s",
+                "username": "%s",
                 "email": "%s",
                 "status": "%s"
             }
-            """.formatted(loan.getLoanId(), loan.getEmail(), status);
+            """.formatted(loan.getLoanId(), username, loan.getEmail(), status);
 
         SendMessageRequest request = buildRequest(message);
 

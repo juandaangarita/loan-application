@@ -72,7 +72,7 @@ adapter:
   sqs:
     region: "us-east-1"
     queueUrl: "https://sqs.us-east-1.amazonaws.com/767397782203/loan-status-queue"
-    endpoint: "http://localhost:4566"
+#    endpoint: "http://localhost:4566"
 resilience4j:
   circuitbreaker:
     instances:

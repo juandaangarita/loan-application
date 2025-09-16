@@ -36,7 +36,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {RouterRest.class, LoanHandler.class})
@@ -105,7 +104,7 @@ class RouterRestTest {
                 .loanId(UUID.randomUUID())
                 .amount(BigDecimal.valueOf(5000))
                 .termMonths(12).email("email@email.com")
-                .documentNumber("1234").loanTypeId(1).loanStatusId(1).build();
+                .documentNumber("1234").loanTypeId(1).statusId(1).build();
 
         LoanDTO loanDTO = new LoanDTO(
                 UUID.randomUUID(), BigDecimal.valueOf(5000), 12, "email@email.com", "1234", 1, 1);

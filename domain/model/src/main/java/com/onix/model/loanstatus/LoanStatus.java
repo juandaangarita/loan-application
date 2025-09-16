@@ -13,6 +13,6 @@ import lombok.ToString;
 @Builder(toBuilder = true)
 @ToString
 public class LoanStatus {
-    private Integer loanStatusId;
+    private Integer statusId;
     private String name;
 }
