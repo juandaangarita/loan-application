@@ -22,6 +22,7 @@ public class RouterRest {
         return route()
                 .POST(loanConfig.getLoan(), loanHandler::listenSaveLoan, LoanOpenApi::createLoan)
                 .GET(loanConfig.getLoan(), loanHandler::listenFilterLoans, LoanOpenApi::createLoan)
+                .PUT(loanConfig.getLoan(), loanHandler::updateLoanStatus, LoanOpenApi::createLoan)
         .build();
     }
 }

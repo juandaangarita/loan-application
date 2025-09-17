@@ -5,6 +5,7 @@ import com.onix.model.loanapplication.dto.LoanPageableDTO;
 import com.onix.model.loanapplication.gateways.LoanRepository;
 import com.onix.r2dbc.entity.LoanEntity;
 import com.onix.r2dbc.helper.ReactiveAdapterOperations;
+import java.util.UUID;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,5 +39,10 @@ public class LoanRepositoryAdapter extends ReactiveAdapterOperations<
     @Override
     public Mono<Long> countPendingLoans(String filter) {
         return repository.countPendingLoans(filter);
+    }
+
+    @Override
+    public Mono<Loan> findById(UUID loanId) {
+        return super.findById(loanId.toString());
     }
 }

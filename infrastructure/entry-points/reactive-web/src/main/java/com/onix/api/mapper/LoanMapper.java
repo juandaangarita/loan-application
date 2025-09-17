@@ -10,10 +10,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface LoanMapper {
 
+    @Mapping(target = "loanStatusId", source = "statusId")
     LoanDTO toDto(Loan loan);
 
     @Mapping(target = "loanId", ignore = true)
-    @Mapping(target = "loanStatusId", ignore = true)
+    @Mapping(target = "statusId", ignore = true)
     Loan toModel(CreateLoanDTO dto);
 
     LoanPageableDTO toPageableDto(Loan loan);

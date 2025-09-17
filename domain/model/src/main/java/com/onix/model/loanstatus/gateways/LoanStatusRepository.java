@@ -4,5 +4,5 @@ import com.onix.model.loanstatus.LoanStatus;
 import reactor.core.publisher.Mono;
 
 public interface LoanStatusRepository {
-    Mono<LoanStatus> getStatusById(Integer id);
+    Mono<LoanStatus> getStatusByName(String name);
 }

@@ -1,11 +1,15 @@
 package com.onix.usecase.loanapplication;
 
+import com.onix.model.exception.LoanNotFoundException;
 import com.onix.model.loanapplication.Loan;
 import com.onix.model.loanapplication.dto.LoanPageableDTO;
 import com.onix.model.loanapplication.dto.PageDTO;
 import com.onix.model.loanapplication.dto.UserDTO;
 import com.onix.model.loanapplication.gateways.LoanRepository;
+import com.onix.model.loanapplication.gateways.LoanStatusPublisher;
 import com.onix.model.loanapplication.gateways.UserClient;
+import com.onix.model.loanstatus.LoanStatus;
+import com.onix.model.loanstatus.gateways.LoanStatusRepository;
 import com.onix.model.loantype.gateways.LoanTypeRepository;
 import com.onix.model.exception.InvalidAmountLoanException;
 import com.onix.model.exception.InvalidLoanTypeException;
@@ -15,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
@@ -25,7 +30,9 @@ public class LoanUseCase {
     private final LoanRepository loanRepository;
     private final LoanValidator loanValidator;
     private final LoanTypeRepository loanTypeRepository;
+    private final LoanStatusRepository loanStatusRepository;
     private final UserClient userClient;
+    private final LoanStatusPublisher sqsPublisher;
 
     public Mono<Loan> createLoanApplication(Loan loan, String token) {
         return loanValidator.validate(loan)
@@ -106,6 +113,44 @@ public class LoanUseCase {
                                         page > 0
                                 );
                             });
+                });
+    }
+
+    public Mono<Loan> updateLoanStatus(UUID loanId, String status, String token) {
+        return loanRepository.findById(loanId)
+                .switchIfEmpty(Mono.error(new LoanNotFoundException(loanId)))
+                .flatMap(loan ->
+                        getStatusIdByName(status)
+                                .flatMap(loanStatus -> {
+                                    if (loanStatus.getStatusId().intValue() == loan.getStatusId()) {
+                                        return Mono.error(new IllegalArgumentException(
+                                                "Loan is already in status: " + status
+                                        ));
+                                    }
+                                    loan.setStatusId(loanStatus.getStatusId());
+                                    return loanRepository.saveLoanApplication(loan);
+                                })
+                )
+                .flatMap(updatedLoan ->
+                        getUserNameByEmail(updatedLoan.getEmail(), token)
+                                .flatMap(userName ->
+                                                sqsPublisher.sendStatusUpdate(updatedLoan, status, userName)
+                                                        .thenReturn(updatedLoan)
+                                        ));
+    }
+
+    private Mono<LoanStatus> getStatusIdByName(String statusName) {
+        return loanStatusRepository.getStatusByName(statusName)
+                .switchIfEmpty(Mono.error(new IllegalArgumentException("Invalid status name: " + statusName)));
+    }
+
+    private Mono<String> getUserNameByEmail(String email, String token) {
+        return userClient.validateUserRegistered(email, null, token)
+                .flatMap(user -> {
+                    if (user == null) {
+                        return Mono.error(new UnregisteredUserException(email, null));
+                    }
+                    return Mono.just(user.name() + " " + user.lastname());
                 });
     }
 }
