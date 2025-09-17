@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/changes/001-create-loan-application-tables.yaml
   - include:
       file: db/changelog/changes/002-insert-default-values.yaml
+  - include:
+      file: db/changelog/changes/003-insert-loan-type.yaml

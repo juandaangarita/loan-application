@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: Juan Angarita
+      changes:
+        - insert:
+            tableName: loan_types
+            columns:
+              - column:
+                  name: loan_type_id
+                  valueNumeric: 3
+              - column:
+                  name: name
+                  value: Auto Validate Loan
+              - column:
+                  name: min_amount
+                  valueNumeric: 0.00
+              - column:
+                  name: max_amount
+                  valueNumeric: 100000000.00
+              - column:
+                  name: interest_rate
+                  valueNumeric: 19.00
+              - column:
+                  name: auto_validation
+                  valueBoolean: false

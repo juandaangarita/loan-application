@@ -6,7 +6,7 @@ import com.onix.model.loanapplication.dto.LoanPageableDTO;
 import com.onix.model.loanapplication.dto.PageDTO;
 import com.onix.model.loanapplication.dto.UserDTO;
 import com.onix.model.loanapplication.gateways.LoanRepository;
-import com.onix.model.loanapplication.gateways.LoanStatusPublisher;
+import com.onix.model.loanapplication.gateways.LoanPublisher;
 import com.onix.model.loanapplication.gateways.UserClient;
 import com.onix.model.loanstatus.LoanStatus;
 import com.onix.model.loanstatus.gateways.LoanStatusRepository;
@@ -32,7 +32,7 @@ public class LoanUseCase {
     private final LoanTypeRepository loanTypeRepository;
     private final LoanStatusRepository loanStatusRepository;
     private final UserClient userClient;
-    private final LoanStatusPublisher sqsPublisher;
+    private final LoanPublisher sqsPublisher;
 
     public Mono<Loan> createLoanApplication(Loan loan, String token) {
         return loanValidator.validate(loan)
